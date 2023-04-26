@@ -18,18 +18,19 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => 'v1','namespace' => 'API/V1'], function () {
+
     //Routes for guest user
     Route::get('products',[ProductController::class,'index'])->name('products.index');
 
     Route::post('auth/login',[AuthController::class,'login'])->name('auth.login');
 
+    //Routes for authenticated user
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::post('auth/logout',[AuthController::class,'logout'])->name('auth.logout');
         Route::post('auth/refresh',[AuthController::class,'refresh'])->name('auth.refresh');
 
 
-        //Routes for registered user
         Route::get('products/{product}',[ProductController::class,'show'])->name('products.show');
 
         Route::get('user_bookmark_product',[UserBookmarkProductController::class,'index'])->name('user.bookmarked_products');
